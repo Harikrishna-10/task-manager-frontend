@@ -3,13 +3,14 @@ import axiosInstance from "./axiosInstance";
 export const uploadImage = async (imageFile) => {
   const formData = new FormData();
   formData.append("profile", imageFile);
+  const token = localStorage.getItem("token");
   try {
     const response = await axiosInstance.post(
       API_PATHS.IMAGE.UPLOAD_IMAGE || "/auth/upload-image",
       formData,
       {
         headers: {
-          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         },
       },
     );
