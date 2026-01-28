@@ -1,5 +1,6 @@
 import { API_PATHS } from "./apiPaths";
-import axiosInstance from "./axiosInstance";
+import axios from "axios";
+
 export const uploadImage = async (imageFile) => {
   const formData = new FormData();
   formData.append("profile", imageFile);
@@ -7,7 +8,7 @@ export const uploadImage = async (imageFile) => {
   const BASE_URL = "https://task-manager-backend-rho-tawny.vercel.app/api";
   const url = `${BASE_URL}/auth/upload-image`;
   try {
-    const response = await axiosInstance.post(url, formData, {
+    const response = await axios.post(url, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
