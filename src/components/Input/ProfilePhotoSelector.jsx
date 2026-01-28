@@ -9,52 +9,54 @@ const ProfilePhotoSelector = ({ image, setImage }) => {
     const file = e.target.files[0];
     if (file) {
       setImage(file);
-      const preview = URL.createObjectURL(file);
-      setPreviewUrl(preview);
+      setPreviewUrl(URL.createObjectURL(file));
     }
   };
 
   const handleRemoveImage = () => {
     setImage(null);
     setPreviewUrl(null);
-  };
-
-  const onChooseFile = () => {
-    inputRef.current.click();
+    inputRef.current.value = "";
   };
 
   return (
     <div className="flex justify-center mb-6">
       <input
         type="file"
-        accept="image"
+        accept="image/*"
         ref={inputRef}
         onChange={handleImageChange}
         className="hidden"
       />
-      {!image ? (
-        <div className="w-20 h-20 flex items-center justify-center bg-blue-100/50 rounded-full relative cursor-pointer">
-          <LuUser className="text-4xl text-primary" />
-          <button
-            type="button"
-            onClick={onChooseFile}
-            className="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-full absolute -bottom-1 right-1 cursor-pointer"
-          >
-            <LuUpload size={16} className="" />
-          </button>
+
+      <div className="relative w-24 h-24">
+        {/* Avatar */}
+        <div
+          onClick={() => inputRef.current.click()}
+          className="w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden cursor-pointer border border-gray-200 hover:opacity-90 transition"
+        >
+          {previewUrl ? (
+            <img
+              src={previewUrl}
+              alt="Profile"
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <LuUser className="text-4xl text-primary" />
+          )}
         </div>
-      ) : (
-        <div className="relative w-24 h-24 rounded-full overflow-hidden">
-          <img
-            src={previewUrl}
-            alt="Profile photo"
-            className="w-20 h-20 rounded-full object-cover"
-          />
-          <button type="button" onClick={handleRemoveImage} className="w-8 h-8 flex items-center justify-center bg-red-500 text-white rounded-full absolute -bottom-1 -right-1 cursor-pointer">
-            <LuTrash size={16} className="" />
-          </button>
-        </div>
-      )}
+
+        <button
+          type="button"
+          onClick={
+            previewUrl ? handleRemoveImage : () => inputRef.current.click()
+          }
+          className={`absolute -bottom-1 -right-1 w-8 h-8 rounded-full flex items-center justify-center text-white shadow-md hover:scale-105 transition
+            ${previewUrl ? "bg-red-500" : "bg-primary"}`}
+        >
+          {previewUrl ? <LuTrash size={16} /> : <LuUpload size={16} />}
+        </button>
+      </div>
     </div>
   );
 };
