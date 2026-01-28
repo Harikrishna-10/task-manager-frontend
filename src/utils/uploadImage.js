@@ -4,20 +4,19 @@ export const uploadImage = async (imageFile) => {
   const formData = new FormData();
   formData.append("profile", imageFile);
   const token = localStorage.getItem("token");
+  const BASE_URL = "https://task-manager-backend-rho-tawny.vercel.app/api";
+  const url = `${BASE_URL}/auth/upload-image`;
   try {
-    const response = await axiosInstance.post(
-      API_PATHS.IMAGE.UPLOAD_IMAGE || "/auth/upload-image",
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    const response = await axios.post(url, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-    );
+    });
     return response.data;
   } catch (error) {
     console.error("Error uploading image:", error);
     throw error;
   }
 };
+
 export default uploadImage;
